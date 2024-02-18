@@ -7,7 +7,7 @@
 _G.base = {}
 
 -- Theme
-base.default_colorscheme = "tokyonight-night"
+base.default_colorscheme = "catppuccin-macchiato"
 
 -- define variables -----------------------------------------------------------
 local options = {
@@ -33,7 +33,7 @@ local options = {
     preserveindent = true, -- Preserve indent structure as much as possible.
     pumheight = 10, -- Height of the pop up menu.
     relativenumber = false, -- Show relative numberline.
-    shiftwidth = 2, -- Number of space inserted for indentation.
+    shiftwidth = 4, -- Number of space inserted for indentation.
     showmode = false, -- Disable showing modes in command line.
     showtabline = 2, -- always display tabline.
     signcolumn = "yes", -- Always show the sign column.
@@ -41,7 +41,7 @@ local options = {
     smartindent = false, -- Smarter autoindentation.
     splitbelow = true, -- Splitting a new window below the current one.
     splitright = true, -- Splitting a new window at the right of the current one.
-    tabstop = 2, -- Number of space in a tab.
+    tabstop = 4, -- Number of space in a tab.
     termguicolors = true, -- Enable 24-bit RGB color in the TUI.
     timeoutlen = 500, -- Shorten key timeout length a little bit for which-key.
     undofile = true, -- Enable persistent undo between session and reboots.

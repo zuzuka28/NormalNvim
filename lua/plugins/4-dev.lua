@@ -465,6 +465,7 @@ return {
       dap.adapters.delve = {
         type = 'server',
         port = '${port}',
+        buildFlags = { "linux" },
         executable = {
           command = vim.fn.stdpath('data')..'/mason/packages/delve/dlv',
           args = {'dap', '-l', '127.0.0.1:${port}'},

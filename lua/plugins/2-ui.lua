@@ -25,6 +25,9 @@ local windows = vim.fn.has('win32') == 1             -- true if on windows
 local android = vim.fn.isdirectory('/system') == 1   -- true if on android
 
 return {
+  -- cattpuccin [theme]
+  -- https://github.com/catppuccin/nvim
+  { "catppuccin/nvim", name = "catppuccin" },
 
   -- tokyonight [theme]
   -- https://github.com/folke/tokyonight.nvim
