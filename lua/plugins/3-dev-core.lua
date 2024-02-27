@@ -17,7 +17,7 @@
 --       -> none-ls                        [lsp code formatting]
 --       -> neodev                         [lsp for nvim lua api]
 
---       ## AUTO COMPLETON
+--       ## AUTO COMPLETION
 --       -> nvim-cmp                       [auto completion engine]
 --       -> cmp-nvim-buffer                [auto completion buffer]
 --       -> cmp-nvim-path                  [auto completion path]
@@ -61,11 +61,12 @@ return {
       context_commentstring = { enable = true, enable_autocmd = false },
       highlight = {
         enable = true,
-        disable = function(_, bufnr) return vim.b[bufnr].large_buf end,
+        disable = function(_, bufnr) return require("base.utils").is_big_file(bufnr) end,
       },
       matchup = {
         enable = true,
         enable_quotes = true,
+        disable = function(_, bufnr) return require("base.utils").is_big_file(bufnr) end,
       },
       incremental_selection = { enable = true },
       indent = { enable = true },
@@ -189,7 +190,7 @@ return {
         end,
         config = function(_, opts)
           require("mason-lspconfig").setup(opts)
-          require("base.utils").trigger_event("MasonLspSetup")
+          require("base.utils").trigger_event("User BaseMasonLspSetup")
         end,
       },
     },
@@ -197,6 +198,9 @@ return {
     config = function(_, _)
       local lsp = require "base.utils.lsp"
       local utils = require "base.utils"
+
+      -- setup LSP icons
+      -- TODO: Can this be moved to the lsp file?
       local get_icon = utils.get_icon
       local signs = {
         { name = "DiagnosticSignError", text = get_icon "DiagnosticError", texthl = "DiagnosticSignError" },
@@ -209,34 +213,24 @@ return {
         { name = "DapBreakpointCondition", text = get_icon "DapBreakpointCondition", texthl = "DiagnosticInfo" },
         { name = "DapLogPoint", text = get_icon "DapLogPoint", texthl = "DiagnosticInfo" },
       }
-
       for _, sign in ipairs(signs) do
         vim.fn.sign_define(sign.name, sign)
       end
       lsp.setup_diagnostics(signs)
 
-      local orig_handler = vim.lsp.handlers["$/progress"]
-      vim.lsp.handlers["$/progress"] = function(_, msg, info)
-        local progress, id = base.lsp.progress, ("%s.%s"):format(info.client_id, msg.token)
-        progress[id] = progress[id] and utils.extend_tbl(progress[id], msg.value) or msg.value
-        if progress[id].kind == "end" then
-          vim.defer_fn(function()
-            progress[id] = nil
-            utils.trigger_event "LspProgress"
-          end, 100)
-        end
-        utils.trigger_event "LspProgress"
-        orig_handler(_, msg, info)
-      end
-
+      -- apply round borders for signature help
+      -- TODO: Move this to the lsp file and just call it from here.
       if vim.g.lsp_round_borders_enabled then
         vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded", silent = true })
         vim.lsp.handlers["textDocument/signatureHelp"] =
           vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded", silent = true })
       end
+
+      -- start lsp servers
+      -- TODO: Explain what's going on here to make it obvious.
       local setup_servers = function()
         vim.api.nvim_exec_autocmds("FileType", {})
-        require("base.utils").trigger_event("LspSetup")
+        require("base.utils").trigger_event("User BaseLspSetup")
       end
       if require("base.utils").is_available "mason-lspconfig.nvim" then
         vim.api.nvim_create_autocmd("User", {

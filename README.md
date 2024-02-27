@@ -1,7 +1,7 @@
 <div align="center">
   <img src="https://github.com/NormalNvim/NormalNvim/assets/3357792/76197752-0947-4392-a6bd-a59d64319028"></img>
   <h1><a href="https://github.com/NormalNvim/NormalNvim">NormalNvim</a></h1>
-  <h3>*✨ ~ ⭐ - A normal Neovim distro - ⭐ ~ ✨*</h3>
+  <h3>*✨ ~ ⭐ - A normal Neovim distribution - ⭐ ~ ✨*</h3>
   <a href="https://discord.gg/ymcMaSnq7d" rel="nofollow">
       <img src="https://img.shields.io/discord/1121138836525813760?color=azure&labelColor=6DC2A4&logo=discord&logoColor=black&label=Join the discord server&style=for-the-badge" data-canonical-src="https://img.shields.io/discord/1121138836525813760">
     </a>
@@ -20,7 +20,7 @@ If you are new here don't forget to [check the wiki](https://github.com/NormalNv
 
 ## How to install
 
-### Install automatically (Linux/MacOS/WSL)
+### Installer (Linux/MacOS/WSL)
 You can preview it [here](https://raw.githubusercontent.com/NormalNvim/installer/main/installer.sh)
 ```sh
 wget -q https://raw.githubusercontent.com/NormalNvim/installer/main/installer.sh && chmod +x installer.sh && ./installer.sh
@@ -79,10 +79,11 @@ Please before opening an issue, check the [astrocommunity](https://github.com/As
 
     `:checkhealth base`
 
-* **Supports Windows?**
-Yes, 100%. This is not necessary, but we strongly recommend you to launch NormalNvim [using WLS](https://www.youtube.com/watch?v=fFbLUEQsRhM) so you can install [the required dependencies](https://github.com/NormalNvim/NormalNvim/wiki/dependencies) to unlock all features.
+* **Why can't I see the icons?** You must install the [nerdfont version of your font](https://www.nerdfonts.com/), and use it on your terminal. Alternatively you can edit `lua/base/icons/nerd_fond.lua` to manually specify your own icons.
 
-* **How can I disable the tabline?** You can delete the plugin heirline.
+* **How can I install a new colorscheme?** Go to `plugins/2-ui.lua`, and add the theme you want. Re-open nvim and now you can set your new colorcheme on `base/1-options.lua`. You can also preview all your installed themes with `<space>+ft`.
+
+* **How can I change the user interface?** We use the plugin heirline to create the user interface. You can re-order or change any component of your user interface in `plugins/2-ui.lua`. If you preffer the classic vim appearance, you can delete the plugin.
 
 * **How can I disable the animations?** You can delete the plugin [mini.animate](https://github.com/echasnovski/mini.animate). In case you only want to disable some animations look into the plugin docs.
 
@@ -91,6 +92,7 @@ Yes, 100%. This is not necessary, but we strongly recommend you to launch Normal
 ```sh
 OPENAI_API_KEY="my_key_here"
 ```
+
 
 * **What scenarios are not covered by this distro?**
   * **Kubernetes**: We do not provide a kubernetes plugin. But we recommend using friendly-snippets, to quickly write code, and [overseer.nvim](https://github.com/stevearc/overseer.nvim) to run kubernetes commands from inside nvim without having to wait for the server response.
@@ -116,8 +118,7 @@ Special thanks to LeoRed04 for designing the logo.
 Did you know NormalNvim was the first Neovim distro to ship a compiler that [support 22+ programming languages out of the box](https://www.youtube.com/watch?v=O42uCIBaCIQ)?
 
 ## Roadmap
-* ~~During 2024, add a installer to take care of installing the system dependencies, which seems to be the main friction point people find.~~
-* During 2024, create CD actions that can be triggered manually to ensure the dependencies install correctly (sometimes distros will change dependency names). → Add it to [NormalNvim/installer](https://github.com/NormalNvim/installer)
+* No new features are planned for now: `v3.6.x` is gonna be focusing on simplifying the config, so expect a few more unusually big updates until `v3.7.x` is released.
 * Once we remove all complexity we possibly can from all configs, lets's start moving to Neovim 0.10, as it is likely to be officially released around april of this year.
 * Once nvim 0.10 is officially released, replace `get_active_clients` by `get_clients`.
 * During 2024, add a toolbar for [Compiler.nvim](https://github.com/Zeioth/compiler.nvim) so users have a button to compile and manage their build automation utilities and current build_type in a friendly way.

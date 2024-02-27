@@ -35,10 +35,6 @@ M.comparator = {}
 
 local fnamemodify = vim.fn.fnamemodify
 local function bufinfo(bufnr) return vim.fn.getbufinfo(bufnr)[1] end
-local function unique_path(bufnr)
-  return require("base.utils.status").provider.unique_path() { bufnr = bufnr }
-      .. fnamemodify(bufinfo(bufnr).name, ":t")
-end
 
 --- Check if a buffer is valid.
 ---@param bufnr number The buffer to check.
@@ -75,15 +71,6 @@ function M.comparator.full_path(bufnr_a, bufnr_b)
       < fnamemodify(bufinfo(bufnr_b).name, ":p")
 end
 
---- Comparator of two buffers based on their unique path.
----@param bufnr_a integer buffer number A.
----@param bufnr_b integer buffer number B.
----@return boolean comparison true if A is sorted before B,
----                           false if B should be sorted before A.
-function M.comparator.unique_path(bufnr_a, bufnr_b)
-  return unique_path(bufnr_a) < unique_path(bufnr_b)
-end
-
 --- Comparator of two buffers based on modification date.
 ---@param bufnr_a integer buffer number A.
 ---@param bufnr_b integer buffer number B.
@@ -118,7 +105,7 @@ function M.move(n)
     end
   end
   vim.t.bufs = bufs       -- set buffers
-  require("base.utils").trigger_event "BufsUpdated"
+  require("base.utils").trigger_event("User HeirlineComponentsUpdateTabline")
   vim.cmd.redrawtabline() -- redraw tabline
 end
 
@@ -248,7 +235,7 @@ function M.sort(compare_func, skip_autocmd)
     local bufs = vim.t.bufs
     table.sort(bufs, compare_func)
     vim.t.bufs = bufs
-    if not skip_autocmd then require("base.utils").trigger_event "BufsUpdated" end
+    if not skip_autocmd then require("base.utils").trigger_event("User HeirlineComponentsUpdateTabline") end
     vim.cmd.redrawtabline()
     return true
   end
@@ -259,7 +246,7 @@ end
 function M.close_tab()
   if #vim.api.nvim_list_tabpages() > 1 then
     vim.t.bufs = nil
-    require("base.utils").trigger_event "BufsUpdated" -- Emit BaseBufsUpdated event
+    require("base.utils").trigger_event("User HeirlineComponentsUpdateTabline")
     vim.cmd.tabclose()
   end
 end

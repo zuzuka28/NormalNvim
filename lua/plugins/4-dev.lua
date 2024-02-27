@@ -41,7 +41,7 @@
 --       -> guttentags_plus                [auto generate C/C++ tags]
 
 local get_icon = require("base.utils").get_icon
-local windows = vim.fn.has('win32') == 1 -- true if on windows
+local is_windows = vim.fn.has('win32') == 1 -- true if on windows
 return {
   --  COMMENTS ----------------------------------------------------------------
   --  Advanced comment features [comment with a key]
@@ -241,6 +241,10 @@ return {
   --  ARTIFICIAL INTELLIGENCE  -------------------------------------------------
   --  neural [chatgpt code generator]
   --  https://github.com/dense-analysis/neural
+  --
+  --  NOTE: In order for this plugin to work, you will have to set
+  --        the next env var in your OS:
+  --        OPENAI_API_KEY="my_key_here"
   {
     "dense-analysis/neural",
     cmd = { "Neural" },
@@ -404,7 +408,7 @@ return {
         executable = {
           command = vim.fn.stdpath('data')..'/mason/bin/codelldb',
           args = {"--port", "${port}"},
-           detached = function() if windows then return false else return true end end,
+           detached = function() if is_windows then return false else return true end end,
         }
       }
       dap.configurations.c = {

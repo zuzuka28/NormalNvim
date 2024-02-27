@@ -60,7 +60,7 @@ local get_icon = utils.get_icon
 local is_available = utils.is_available
 local ui = require "base.utils.ui"
 local maps = require("base.utils").empty_map_table()
-local android = vim.fn.isdirectory('/system') == 1   -- true if on android
+local is_android = vim.fn.isdirectory('/system') == 1   -- true if on android
 
 -- -------------------------------------------------------------------------
 --
@@ -119,7 +119,7 @@ maps.n["<Tab>"] = {
 
 -- BUG: We disable these mappings on termux by default because <C-y>
 --      is the keycode for scrolling, and remapping it would break it.
-if not android then
+if not is_android then
   -- only useful when the option clipboard is commented on ./1-options.lua
   maps.n["<C-y>"] = { '"+y<esc>', desc = "Copy to cliboard" }
   maps.x["<C-y>"] = { '"+y<esc>', desc = "Copy to cliboard" }
@@ -334,7 +334,7 @@ maps.n["<leader>bC"] = {
 }
 maps.n["<leader>bb"] = {
   function()
-    require("base.utils.status").heirline.buffer_picker(
+    require("heirline-components.all").heirline.buffer_picker(
       function(bufnr) vim.api.nvim_win_set_buf(0, bufnr) end
     )
   end,
@@ -342,7 +342,7 @@ maps.n["<leader>bb"] = {
 }
 maps.n["<leader>bd"] = {
   function()
-    require("base.utils.status").heirline.buffer_picker(
+    require("heirline-components.all").heirline.buffer_picker(
       function(bufnr) require("base.utils.buffer").close(bufnr) end
     )
   end,
@@ -379,7 +379,7 @@ maps.n["<leader>bsm"] = {
 }
 maps.n["<leader>b\\"] = {
   function()
-    require("base.utils.status").heirline.buffer_picker(function(bufnr)
+    require("heirline-components.all").heirline.buffer_picker(function(bufnr)
       vim.cmd.split()
       vim.api.nvim_win_set_buf(0, bufnr)
     end)
@@ -388,7 +388,7 @@ maps.n["<leader>b\\"] = {
 }
 maps.n["<leader>b|"] = {
   function()
-    require("base.utils.status").heirline.buffer_picker(function(bufnr)
+    require("heirline-components.all").heirline.buffer_picker(function(bufnr)
       vim.cmd.vsplit()
       vim.api.nvim_win_set_buf(0, bufnr)
     end)
@@ -672,7 +672,7 @@ end
 
 -- neotree
 if is_available "neo-tree.nvim" then
-  maps.n["<leader>e"] = { "<cmd>Neotree toggle<cr>", desc = "neotree" }
+  maps.n["<leader>e"] = { "<cmd>Neotree toggle<cr>", desc = "Neotree" }
   maps.n["<leader>o"] = {
     function()
       if vim.bo.filetype == "neo-tree" then
@@ -1245,7 +1245,7 @@ if is_available "markdown-preview.nivm" or is_available "markmap.nvim" or is_ava
   if is_available "markmap.nvim" then
     maps.n["<leader>Dm"] = {
       function()
-        if android then vim.cmd "MarkmapWatch"
+        if is_android then vim.cmd "MarkmapWatch"
         else vim.cmd "MarkmapOpen"end
       end,
       desc = "Markmap",
